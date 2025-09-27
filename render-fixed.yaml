@@ -1,0 +1,43 @@
+services:
+- type: web
+  name: socialflow-backend
+  env: node
+  rootDir: backend
+  buildCommand: npm install && npx prisma generate
+  startCommand: npx prisma migrate deploy && npm start
+  envVars:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: 5000
+  - key: DATABASE_URL
+    generateValue: false
+  - key: JWT_SECRET
+    generateValue: false
+  - key: CLIENT_URL
+    value: https://socialflow-frontend.onrender.com
+  - key: FACEBOOK_APP_ID
+    generateValue: false
+  - key: FACEBOOK_APP_SECRET
+    generateValue: false
+  - key: INSTAGRAM_REDIRECT_URI
+    value: https://socialflow-frontend.onrender.com
+  - key: GEMINI_API_KEY
+    generateValue: false
+  - key: HF_TOKEN
+    generateValue: false
+  - key: CLOUDINARY_CLOUD_NAME
+    generateValue: false
+  - key: CLOUDINARY_API_KEY
+    generateValue: false
+  - key: CLOUDINARY_API_SECRET
+    generateValue: false
+
+- type: web
+  name: socialflow-frontend
+  env: static
+  buildCommand: npm install && npm run build
+  staticPublishPath: ./dist
+  envVars:
+  - key: VITE_API_URL
+    value: https://socialflow-backend.onrender.com
