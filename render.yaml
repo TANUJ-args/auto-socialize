@@ -73,11 +73,10 @@ services:
       sizeGB: 1
 
   # Frontend React App
-  - type: web
+  - type: static
     name: socialflow-frontend
-    runtime: static
     buildCommand: npm install && npm run build
-    publishPath: ./dist
+    publishDir: dist
     plan: free
     region: oregon  # or your preferred region
     branch: main
