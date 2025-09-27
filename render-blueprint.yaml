@@ -1,0 +1,40 @@
+# 🚀 One-Click Render Deployment Blueprint
+# Click this link to deploy instantly: https://render.com/deploy?repo=https://github.com/YOUR_USERNAME/ai-social-draft-main
+
+name: socialflow
+region: oregon
+services:
+  - type: web
+    name: socialflow-backend
+    runtime: node
+    buildCommand: cd backend && npm install && npx prisma generate
+    startCommand: cd backend && npx prisma migrate deploy && npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT  
+        value: 5000
+      - key: CLIENT_URL
+        value: https://socialflow-frontend.onrender.com
+      - key: INSTAGRAM_REDIRECT_URI
+        value: https://socialflow-frontend.onrender.com
+      - key: DATABASE_URL
+        generateValue: false  # User must set this
+      - key: JWT_SECRET
+        generateValue: false  # User must set this
+    healthCheckPath: /api/health
+    
+  - type: web
+    name: socialflow-frontend  
+    runtime: static
+    buildCommand: npm install && npm run build
+    publishPath: ./dist
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        value: https://socialflow-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

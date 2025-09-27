@@ -1,0 +1,145 @@
+# 🚀 SocialFlow - One-Click Render Deployment
+# This file enables automatic deployment of both frontend and backend services
+# Simply connect this repo to Render and it will deploy both services automatically!
+
+services:
+  # Backend API Service
+  - type: web
+    name: socialflow-backend
+    runtime: node
+    rootDir: ./backend
+    buildCommand: npm install && npx prisma generate
+    startCommand: npx prisma migrate deploy && npm start
+    plan: free  # Change to 'starter' for production
+    region: oregon  # or your preferred region
+    branch: main  # Deploy from main branch
+    envVars:
+      # 🔴 REQUIRED - Your app won't work without these
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        sync: false  # Set this in Render dashboard - your Neon PostgreSQL URL
+      - key: JWT_SECRET
+        sync: false  # Set this in Render dashboard - 32+ character secret
+      - key: CLIENT_URL
+        value: https://socialflow-frontend.onrender.com
+      
+      # 🟡 INSTAGRAM - Add these when you want Instagram features
+      - key: FACEBOOK_APP_ID
+        sync: false  # Optional - set in dashboard when ready
+      - key: FACEBOOK_APP_SECRET
+        sync: false  # Optional - set in dashboard when ready
+      - key: INSTAGRAM_REDIRECT_URI
+        value: https://socialflow-frontend.onrender.com
+      
+      # 🟢 AI FEATURES - Add these when you want AI content generation
+      - key: GEMINI_API_KEY
+        sync: false  # Optional - Google AI Studio API key
+      - key: HF_TOKEN
+        sync: false  # Optional - Hugging Face token
+      - key: OPENAI_API_KEY
+        sync: false  # Optional - OpenAI API key
+      
+      # 🔵 FILE STORAGE - Add these when you want cloud file uploads
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false  # Optional - Cloudinary cloud name
+      - key: CLOUDINARY_API_KEY
+        sync: false  # Optional - Cloudinary API key
+      - key: CLOUDINARY_API_SECRET
+        sync: false  # Optional - Cloudinary API secret
+      
+      # 🟣 EMAIL - Add these when you want email notifications
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false  # Optional - your email
+      - key: SMTP_PASS
+        sync: false  # Optional - your email app password
+    
+    # Health check for the backend
+    healthCheckPath: /api/health
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    
+    # Disk storage for uploaded files (if not using Cloudinary)
+    disk:
+      name: socialflow-uploads
+      mountPath: /app/uploads
+      sizeGB: 1
+
+  # Frontend React App
+  - type: web
+    name: socialflow-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    publishPath: ./dist
+    plan: free
+    region: oregon  # or your preferred region
+    branch: main
+    envVars:
+      - key: VITE_API_URL
+        value: https://socialflow-backend.onrender.com
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    
+    # Custom headers for better performance
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+    
+    # Custom routes for SPA
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+# 📋 DEPLOYMENT INSTRUCTIONS:
+#
+# 1. 🗄️ CREATE DATABASE (2 minutes):
+#    - Go to https://console.neon.tech
+#    - Sign up (free) → Create project "socialflow"
+#    - Copy your PostgreSQL connection string
+#
+# 2. 🚀 DEPLOY ON RENDER (3 minutes):
+#    - Go to https://dashboard.render.com
+#    - Sign up → Connect GitHub
+#    - Click "New" → "Blueprint" 
+#    - Connect this repository
+#    - Render will read this file and create both services!
+#
+# 3. ⚙️ SET REQUIRED VARIABLES (2 minutes):
+#    Go to your backend service → Environment tab:
+#    - DATABASE_URL = your_neon_connection_string
+#    - JWT_SECRET = generate_32_character_secret
+#
+# 4. ✅ DONE! (2 minutes):
+#    - Both services will deploy automatically
+#    - Frontend: https://socialflow-frontend.onrender.com
+#    - Backend: https://socialflow-backend.onrender.com
+#
+# 🔑 Generate JWT Secret:
+# node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+#
+# 🎯 Total Time: ~10 minutes for full deployment!
+#
+# 📈 ADD FEATURES LATER:
+# - Instagram: Add FACEBOOK_APP_ID and FACEBOOK_APP_SECRET
+# - AI Content: Add GEMINI_API_KEY or HF_TOKEN  
+# - File Uploads: Add Cloudinary credentials
+# - Email: Add SMTP credentials
+#
+# 🆘 TROUBLESHOOTING:
+# - Check logs in Render dashboard
+# - Verify environment variables are set
+# - Test database connection
+# - Ensure both services show "Live" status

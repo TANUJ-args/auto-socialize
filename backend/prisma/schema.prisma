@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id @default(cuid())
+  email          String?          @unique
+  passwordHash   String?
+  passwordless   Boolean          @default(false)
+  isGuest        Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  socialAccounts SocialAccount[]
+  posts          Post[]
+  chatSessions   ChatSession[]
+  otpCodes       OtpCode[]
+  images         GeneratedImage[]
+  subscription   Subscription?
+  usageStats     UsageStats[]
+  billingEvents  BillingEvent[]
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  
+  @@index([email])
+  @@index([code])
+}
+
+model SocialAccount {
+  id           String    @id @default(cuid())
+  userId       String
+  platform     String // instagram | twitter | linkedin
+  accountId    String
+  accountName  String? // username or display name
+  username     String?
+  displayName  String?
+  profileImage String?
+  accessToken  String
+  refreshToken String?
+  tokenExpiry  DateTime?
+  accountData  Json? // platform-specific data
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  user         User      @relation(fields: [userId], references: [id])
+  
+  @@unique([userId, platform])
+  @@index([userId])
+}
+
+model Post {
+  id                     String    @id @default(cuid())
+  userId                 String
+  title                  String?
+  content                String
+  postType               String // text | image | video
+  mediaUrl               String?
+  mediaId                String?
+  scheduledDate          DateTime?
+  status                 String // draft | scheduled | published | failed
+  platforms              String[]
+  platformSpecificContent Json?
+  aiGenerated            Boolean   @default(false)
+  prompt                 String?
+  publishResults         Json?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  user                   User      @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([status])
+  @@index([scheduledDate])
+  @@index([status, scheduledDate])
+}
+
+model ChatSession {
+  id        String        @id @default(cuid())
+  userId    String
+  title     String?
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  messages  ChatMessage[]
+  user      User          @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  userId    String?
+  role      String // user | assistant
+  content   String
+  metadata  String? // JSON string for storing additional data like image URLs
+  timestamp DateTime    @default(now())
+  session   ChatSession @relation(fields: [sessionId], references: [id])
+  
+  @@index([sessionId])
+  @@index([sessionId, timestamp])
+}
+
+model GeneratedImage {
+  id          String   @id @default(cuid())
+  userId      String
+  filename    String   @unique
+  originalUrl String   // base64 data url
+  prompt      String
+  model       String
+  modelName   String?
+  size        Int?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([userId, createdAt])
+}
+
+model Subscription {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  plan             String    // free | starter | pro | enterprise
+  status           String    // active | canceled | past_due | trialing
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAtPeriodEnd  Boolean   @default(false)
+  stripeCustomerId   String?   @unique
+  stripeSubscriptionId String? @unique
+  priceId          String?
+  trialEndsAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([status])
+}
+
+model UsageStats {
+  id              String   @id @default(cuid())
+  userId          String
+  date            DateTime @db.Date
+  imagesGenerated Int      @default(0)
+  postsPublished  Int      @default(0)
+  chatMessages    Int      @default(0)
+  apiCalls        Int      @default(0)
+  user            User     @relation(fields: [userId], references: [id])
+  
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+model BillingEvent {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // subscription_created | subscription_updated | subscription_canceled | payment_succeeded | payment_failed
+  stripeEventId String? @unique
+  data        Json?
+  processed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([type])
+  @@index([processed])
+}

@@ -1,0 +1,173 @@
+# ================================
+# 🔒 BACKEND SENSITIVE FILES
+# ================================
+
+# Environment variables (NEVER commit!)
+.env*
+!.env.example
+.env.local
+.env.development
+.env.production
+.env.test
+.env.staging
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+database.json
+prisma/dev.db
+prisma/*.db
+
+# Database migrations (keep structure, not data)
+prisma/migrations/*/migration.sql
+!prisma/migrations/migration_lock.toml
+prisma/schema.prisma.backup
+
+# API Keys and tokens
+api-keys.*
+tokens.*
+credentials.*
+secrets.*
+instagram-token.*
+access-token.*
+
+# Upload directories
+uploads/*
+!uploads/.gitkeep
+files/*
+media/*
+images/*
+temp-uploads/
+
+# ================================
+# 🗑️ BUILD & DEPENDENCIES  
+# ================================
+
+# Dependencies
+node_modules/
+npm-modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.output/
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ================================
+# 📝 LOGS & DEBUGGING
+# ================================
+
+# Log files  
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+debug.log
+error.log
+access.log
+combined.log
+
+# ================================
+# 🧪 TESTING
+# ================================
+
+# Test files (keep test structure)
+test-*.js
+*-test.js
+testing/
+coverage/
+.nyc_output/
+
+# Test databases
+test.db
+test.sqlite
+*.test.db
+
+# ================================
+# 💾 TEMPORARY & CACHE
+# ================================
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+*.tmp
+*.bak
+*.backup
+
+# Cache
+.cache/
+.npm/
+.eslintcache
+
+# Runtime
+*.pid
+*.seed
+*.pid.lock
+
+# ================================
+# 🐳 DOCKER & DEPLOYMENT
+# ================================
+
+# Docker local overrides
+docker-compose.local.yml
+docker-compose.override.yml
+Dockerfile.local
+
+# Deployment configs
+.deployment
+deploy.sh
+
+# ================================
+# 🔐 SECURITY FILES
+# ================================
+
+# SSL certificates
+*.pem  
+*.key
+*.crt
+*.cer
+certificates/
+ssl/
+
+# SSH keys
+id_rsa*
+*.ppk
+
+# ================================
+# 🎯 BACKEND-SPECIFIC
+# ================================
+
+# Prisma local
+prisma/schema.prisma.bak
+prisma/.env
+prisma/dev.db*
+
+# Email templates (if containing sensitive data)
+templates/email/personal/
+
+# Session storage
+sessions/
+.sessions
+
+# Process files
+.pm2/
+
+# ================================
+# ✅ KEEP THESE FILES
+# ================================
+
+# Keep examples and docs
+!.env.example
+!prisma/schema.prisma
+!package.json
+!README.md
