@@ -17,8 +17,9 @@ services:
       - key: CLIENT_URL
         value: https://socialflow-frontend.onrender.com
 
-  - type: static
+  - type: web
     name: socialflow-frontend
+    env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     envVars:
