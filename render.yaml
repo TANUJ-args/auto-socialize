@@ -6,7 +6,7 @@ services:
   # Backend API Service
   - type: web
     name: socialflow-backend
-    runtime: node
+    env: node
     rootDir: ./backend
     buildCommand: npm install && npx prisma generate
     startCommand: npx prisma migrate deploy && npm start
@@ -20,35 +20,35 @@ services:
       - key: PORT
         value: 5000
       - key: DATABASE_URL
-        sync: false  # Set this in Render dashboard - your Neon PostgreSQL URL
+        generateValue: false  # Set this in Render dashboard - your Neon PostgreSQL URL
       - key: JWT_SECRET
-        sync: false  # Set this in Render dashboard - 32+ character secret
+        generateValue: false  # Set this in Render dashboard - 32+ character secret
       - key: CLIENT_URL
         value: https://socialflow-frontend.onrender.com
       
       # 🟡 INSTAGRAM - Add these when you want Instagram features
       - key: FACEBOOK_APP_ID
-        sync: false  # Optional - set in dashboard when ready
+        generateValue: false  # Optional - set in dashboard when ready
       - key: FACEBOOK_APP_SECRET
-        sync: false  # Optional - set in dashboard when ready
+        generateValue: false  # Optional - set in dashboard when ready
       - key: INSTAGRAM_REDIRECT_URI
         value: https://socialflow-frontend.onrender.com
       
       # 🟢 AI FEATURES - Add these when you want AI content generation
       - key: GEMINI_API_KEY
-        sync: false  # Optional - Google AI Studio API key
+        generateValue: false  # Optional - Google AI Studio API key
       - key: HF_TOKEN
-        sync: false  # Optional - Hugging Face token
+        generateValue: false  # Optional - Hugging Face token
       - key: OPENAI_API_KEY
-        sync: false  # Optional - OpenAI API key
+        generateValue: false  # Optional - OpenAI API key
       
       # 🔵 FILE STORAGE - Add these when you want cloud file uploads
       - key: CLOUDINARY_CLOUD_NAME
-        sync: false  # Optional - Cloudinary cloud name
+        generateValue: false  # Optional - Cloudinary cloud name
       - key: CLOUDINARY_API_KEY
-        sync: false  # Optional - Cloudinary API key
+        generateValue: false  # Optional - Cloudinary API key
       - key: CLOUDINARY_API_SECRET
-        sync: false  # Optional - Cloudinary API secret
+        generateValue: false  # Optional - Cloudinary API secret
       
       # 🟣 EMAIL - Add these when you want email notifications
       - key: SMTP_HOST
@@ -56,9 +56,9 @@ services:
       - key: SMTP_PORT
         value: 587
       - key: SMTP_USER
-        sync: false  # Optional - your email
+        generateValue: false  # Optional - your email
       - key: SMTP_PASS
-        sync: false  # Optional - your email app password
+        generateValue: false  # Optional - your email app password
     
     # Health check for the backend
     healthCheckPath: /api/health
@@ -72,11 +72,12 @@ services:
       mountPath: /app/uploads
       sizeGB: 1
 
-  # Frontend React App
-  - type: static
+  # Frontend React App  
+  - type: web
     name: socialflow-frontend
+    env: static
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: ./dist
     plan: free
     region: oregon  # or your preferred region
     branch: main
