@@ -21,10 +21,8 @@ export function Header() {
     >
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
-            <span className="text-white font-bold text-lg">S</span>
-          </div>
-          <span className="text-xl font-bold gradient-text">SocialFlow</span>
+          <img src="/favicon.svg" alt="Auto-Socialize" className="w-8 h-8" />
+          <span className="text-xl font-bold gradient-text">Auto-Socialize</span>
         </Link>
 
         <nav className="flex items-center gap-4">

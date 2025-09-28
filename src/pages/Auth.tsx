@@ -40,7 +40,7 @@ export default function Auth() {
     
     try {
       await signIn("email-otp", { email, code });
-      toast.success("Welcome to SocialFlow!");
+      toast.success("Welcome to Auto-Socialize!");
       navigate("/dashboard");
     } catch (error) {
       toast.error(mapAuthError(error));
@@ -71,8 +71,8 @@ export default function Auth() {
       >
         <Card className="glass p-8">
           <div className="mb-8 text-center">
-            <Sparkles className="mx-auto mb-4 h-12 w-12 text-primary" />
-            <h1 className="text-2xl font-bold">Welcome to SocialFlow</h1>
+            <img src="/favicon.svg" alt="Auto-Socialize" className="mx-auto mb-4 h-12 w-12" />
+            <h1 className="text-2xl font-bold">Welcome to Auto-Socialize</h1>
             <p className="mt-2 text-muted-foreground">
               {step === "email" ? "Sign in or create an account" : "Enter verification code"}
             </p>
