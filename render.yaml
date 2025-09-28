@@ -33,8 +33,6 @@ services:
         value: "" # Add your Facebook app secret
       - key: INSTAGRAM_ACCESS_TOKEN
         value: "" # Add your Instagram access token
-      - key: INSTAGRAM_REDIRECT_URI
-        value: "" # Add your Render service URL + /api/instagram/oauth/callback
 
 # Using external Neon PostgreSQL database - no need for built-in database
 
