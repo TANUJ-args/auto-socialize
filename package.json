@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "cd backend && npm install && npx prisma generate",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview --port 3000 --host",
+    "start": "cd backend && npx prisma migrate deploy && npm start",
     "docker:build": "docker build -t socialflow-frontend .",
     "docker:run": "docker run -p 3000:80 socialflow-frontend"
   },
