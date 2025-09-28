@@ -2,6 +2,17 @@
 
 > **Transform your social media strategy with intelligent automation and seamless content creation.**
 
+## ⚡ Quick Deploy (FREE - 10 minutes)
+
+📖 **[Complete Step-by-Step Guide](./RENDER_DEPLOYMENT_GUIDE.md)**
+
+### 🎯 Three Simple Steps:
+1. **Database**: [Create free Neon PostgreSQL](https://console.neon.tech) → Copy connection string
+2. **Frontend**: [Deploy Static Site on Render](https://dashboard.render.com) → Connect repo → Set build commands  
+3. **Backend**: [Deploy Web Service on Render](https://dashboard.render.com) → Set environment variables
+
+**Result**: Full-stack app running on `https://your-app.onrender.com` - **$0/month** 🎉
+
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TANUJ-args/auto-socialize)
 
 ## ✨ **Features**

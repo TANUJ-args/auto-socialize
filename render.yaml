@@ -1,4 +1,16 @@
 services:
+  # Frontend Service (React/Vite)
+  - type: web
+    name: socialflow-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://socialflow-backend.onrender.com
+      - key: VITE_APP_URL
+        value: https://socialflow-frontend.onrender.com
+
   # Backend API Service
   - type: web
     name: socialflow-backend
@@ -10,11 +22,11 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 5000
+        value: 10000
       - key: JWT_SECRET
         value: LEv5DmQSg0L9gz6B2wtFW9HcTmL8VwAtU82r8l9ky5lQm9t41TfhQJm3bBFPuTSO4KX2QegqOJxnTLcRlWjugcoZsTeRu0OaRhwMRYsdyfnxP
       - key: CLIENT_URL
-        value: https://auto-socialize.vercel.app
+        value: https://socialflow-frontend.onrender.com
       - key: DATABASE_URL
         value: "" # Add your Neon PostgreSQL connection string here
       - key: HF_TOKEN
@@ -31,32 +43,50 @@ services:
         value: 1651763742686740
       - key: FACEBOOK_APP_SECRET
         value: "" # Add your Facebook app secret
+      - key: INSTAGRAM_REDIRECT_URI
+        value: https://socialflow-backend.onrender.com/api/instagram/oauth/callback
 # INSTAGRAM_ACCESS_TOKEN removed - using per-user tokens from database instead
 
 # Using external Neon PostgreSQL database - no need for built-in database
 
-# 📋 DEPLOYMENT INSTRUCTIONS:
+# 📋 COMPLETE DEPLOYMENT GUIDE (FREE PLAN):
 #
-# 1. 🗄️ CREATE DATABASE (2 minutes):
+# 🎯 STEP 1: CREATE FREE DATABASE (2 minutes)
 #    - Go to https://console.neon.tech
 #    - Sign up (free) → Create project "socialflow"
-#    - Copy your PostgreSQL connection string
+#    - Copy PostgreSQL connection string (starts with postgresql://)
 #
-# 2. 🚀 DEPLOY ON RENDER (3 minutes):
+# 🎯 STEP 2: DEPLOY ON RENDER (5 minutes)
 #    - Go to https://dashboard.render.com
-#    - Sign up → Connect GitHub
-#    - Click "New" → "Blueprint" 
+#    - Sign up (free) → Connect GitHub → Select this repository
+#    - Click "New" → "Web Service" (NOT Blueprint - avoids payment wall!)
+#    - Choose "Build and deploy from Git repository"
 #    - Connect this repository
-#    - Render will read this file and create both services!
+#    - IMPORTANT: Create TWO separate services manually
 #
-# 3. ⚙️ SET REQUIRED VARIABLES (2 minutes):
-#    Go to your backend service → Environment tab:
-#    - DATABASE_URL = your_neon_connection_string
-#    - JWT_SECRET = generate_32_character_secret
+# 🎯 STEP 3A: CREATE FRONTEND SERVICE
+#    - Service Name: socialflow-frontend
+#    - Root Directory: (leave empty)
+#    - Environment: Static Site
+#    - Build Command: npm install && npm run build
+#    - Publish Directory: dist
+#    - Add Environment Variable: VITE_API_URL = https://socialflow-backend.onrender.com
 #
-# 4. ✅ DONE! (2 minutes):
-#    - Both services will deploy automatically
-#    - Frontend: https://socialflow-frontend.onrender.com
+# 🎯 STEP 3B: CREATE BACKEND SERVICE  
+#    - Service Name: socialflow-backend
+#    - Root Directory: backend
+#    - Environment: Node
+#    - Build Command: npm install && npx prisma generate
+#    - Start Command: npx prisma migrate deploy && npm start
+#    - Add Environment Variables (copy from this file's envVars section)
+#
+# 🎯 STEP 4: SET REQUIRED VARIABLES (2 minutes)
+#    Go to backend service → Environment tab → Add:
+#    - DATABASE_URL = your_neon_connection_string (from Step 1)
+#    - All other variables can be added later when needed
+#
+# ✅ RESULT: Both services deploy on FREE plan!
+#    - Frontend: https://socialflow-frontend.onrender.com  
 #    - Backend: https://socialflow-backend.onrender.com
 #
 # 🔑 Generate JWT Secret:
