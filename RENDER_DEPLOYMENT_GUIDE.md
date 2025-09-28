@@ -1,9 +1,9 @@
-# 🚀 Complete Render Deployment Guide (FREE Plan)
+# 🚀 Complete Render Deployment Guide (100% FREE - No Payment Wall)
 
 ## 📋 Prerequisites
 - GitHub account with your repository
 - 10 minutes of your time
-- No payment required!
+- **AVOID BLUEPRINT** - We'll create services individually to stay free!
 
 ## 🎯 Step 1: Create Database (2 minutes)
 
@@ -17,43 +17,57 @@
 
 1. Go to [Render Dashboard](https://dashboard.render.com)
 2. Sign up and connect your GitHub account
-3. Click **"New"** → **"Static Site"**
-4. Connect your repository: `auto-socialize`
-5. Configure:
+3. ⚠️ **IMPORTANT**: Click **"New"** → **"Static Site"** (NOT Blueprint!)
+4. Click **"Build and deploy from a Git repository"**
+5. Connect your repository: `auto-socialize`
+6. Configure:
    ```
    Name: socialflow-frontend
-   Root Directory: (leave empty)
+   Root Directory: (leave empty - this is key!)
    Build Command: npm install && npm run build
    Publish Directory: dist
+   Auto-Deploy: Yes
    ```
-6. Add Environment Variables:
+7. **Before creating**, add Environment Variables:
    ```
    VITE_API_URL = https://socialflow-backend.onrender.com
-   VITE_APP_URL = https://socialflow-frontend.onrender.com
    ```
-7. Click **"Create Static Site"**
+   (Note: We'll get the exact backend URL in next step)
+8. Click **"Create Static Site"**
+9. Wait for deployment (2-3 minutes)
 
-## 🎯 Step 3: Deploy Backend (3 minutes)
+## 🎯 Step 3: Deploy Backend (4 minutes)
 
-1. In Render Dashboard, click **"New"** → **"Web Service"**
-2. Connect same repository: `auto-socialize`
-3. Configure:
+1. In Render Dashboard, click **"New"** → **"Web Service"** (NOT Blueprint!)
+2. Click **"Build and deploy from a Git repository"**
+3. Connect same repository: `auto-socialize`
+4. Configure:
    ```
    Name: socialflow-backend
    Root Directory: backend
    Environment: Node
+   Region: US-West (or closest to you)
+   Branch: main
    Build Command: npm install && npx prisma generate
    Start Command: npx prisma migrate deploy && npm start
+   Auto-Deploy: Yes
    ```
-4. Add Environment Variables (Essential ones first):
+5. Add Environment Variables (click "Add Environment Variable"):
    ```
    NODE_ENV = production
-   PORT = 10000
-   DATABASE_URL = [your_neon_connection_string_from_step_1]
+   DATABASE_URL = [paste_your_neon_connection_string_from_step_1]
    JWT_SECRET = LEv5DmQSg0L9gz6B2wtFW9HcTmL8VwAtU82r8l9ky5lQm9t41TfhQJm3bBFPuTSO4KX2QegqOJxnTLcRlWjugcoZsTeRu0OaRhwMRYsdyfnxP
    CLIENT_URL = https://socialflow-frontend.onrender.com
    ```
-5. Click **"Create Web Service"**
+6. Click **"Create Web Service"**
+7. Wait for deployment (3-5 minutes)
+
+## 🎯 Step 4: Update Frontend URL (1 minute)
+
+1. Go back to your frontend service
+2. Click **"Environment"** tab
+3. Update `VITE_API_URL` with your actual backend URL
+4. Service will redeploy automatically
 
 ## ✅ Step 4: Verify Deployment (2 minutes)
 
