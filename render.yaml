@@ -34,7 +34,7 @@ services:
       - key: INSTAGRAM_ACCESS_TOKEN
         value: "" # Add your Instagram access token
       - key: INSTAGRAM_REDIRECT_URI
-        generateValue: https://$RENDER_SERVICE_NAME.onrender.com/api/instagram/oauth/callback
+        value: "" # Add your Render service URL + /api/instagram/oauth/callback
 
 # Using external Neon PostgreSQL database - no need for built-in database
 
