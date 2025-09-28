@@ -71,8 +71,8 @@ export default function Auth() {
       >
         <Card className="glass p-8">
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
-              <span className="text-white font-bold text-xl">S</span>
+            <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-xl select-none">A</span>
             </div>
             <h1 className="text-2xl font-bold">Welcome to Auto-Socialize</h1>
             <p className="mt-2 text-muted-foreground">
