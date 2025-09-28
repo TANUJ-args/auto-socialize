@@ -31,8 +31,7 @@ services:
         value: 1651763742686740
       - key: FACEBOOK_APP_SECRET
         value: "" # Add your Facebook app secret
-      - key: INSTAGRAM_ACCESS_TOKEN
-        value: "" # Add your Instagram access token
+# INSTAGRAM_ACCESS_TOKEN removed - using per-user tokens from database instead
 
 # Using external Neon PostgreSQL database - no need for built-in database
 
@@ -66,18 +65,22 @@ services:
 # 🎯 Total Time: ~10 minutes for full deployment!
 #
 # 📈 ADD FEATURES LATER:
-# - Instagram: Add INSTAGRAM_ACCESS_TOKEN in Environment tab
-#   * Get token from: https://developers.facebook.com/tools/explorer/
-#   * Add FACEBOOK_APP_ID and FACEBOOK_APP_SECRET
+# - Instagram: Add FACEBOOK_APP_ID and FACEBOOK_APP_SECRET for OAuth
+#   * Create Facebook App: https://developers.facebook.com/apps/
+#   * Each user connects their own Instagram via OAuth
 # - AI Content: Add OPENAI_API_KEY or HF_TOKEN in Environment tab
 # - File Uploads: Add CLOUDINARY_API_SECRET in Environment tab
 # - Email: Add SMTP credentials
 #
 # 🔄 TO UPDATE ENVIRONMENT VARIABLES:
 # 1. Go to Render Dashboard → Your Service → Environment
-# 2. Find the variable (e.g., INSTAGRAM_ACCESS_TOKEN)
-# 3. Click "Edit" → Add your actual token → Save
-# 4. Service will automatically restart with new variables
+# 2. Find the variable → Click "Edit" → Add value → Save
+# 3. Service will automatically restart with new variables
+#
+# 👥 MULTI-USER INSTAGRAM:
+# - Users connect via: POST /api/instagram/connect (requires auth)
+# - Each user's Instagram tokens stored in database (SocialAccount model)
+# - No global Instagram token needed!
 #
 # 🆘 TROUBLESHOOTING:
 # - Check logs in Render dashboard
