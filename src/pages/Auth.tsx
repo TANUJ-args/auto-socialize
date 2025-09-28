@@ -71,7 +71,9 @@ export default function Auth() {
       >
         <Card className="glass p-8">
           <div className="mb-8 text-center">
-            <img src="/favicon.svg" alt="Auto-Socialize" className="mx-auto mb-4 h-12 w-12" />
+            <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+              <span className="text-white font-bold text-xl">S</span>
+            </div>
             <h1 className="text-2xl font-bold">Welcome to Auto-Socialize</h1>
             <p className="mt-2 text-muted-foreground">
               {step === "email" ? "Sign in or create an account" : "Enter verification code"}
