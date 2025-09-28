@@ -1,4 +1,5 @@
 services:
+  # Backend API Service
   - type: web
     name: socialflow-backend
     env: node
@@ -10,21 +11,37 @@ services:
         value: production
       - key: PORT
         value: 5000
-      - key: DATABASE_URL
-        value: "" # Placeholder value, replace with actual database URL
       - key: JWT_SECRET
-        value: "" # Placeholder value, replace with actual JWT secret
+        value: LEv5DmQSg0L9gz6B2wtFW9HcTmL8VwAtU82r8l9ky5lQm9t41TfhQJm3bBFPuTSO4KX2QegqOJxnTLcRlWjugcoZsTeRu0OaRhwMRYsdyfnxP
       - key: CLIENT_URL
-        value: https://socialflow-frontend.onrender.com
+        value: https://auto-socialize.vercel.app
+      - key: DATABASE_URL
+        fromDatabase:
+          name: socialflow-db
+          property: connectionString
+      - key: HF_TOKEN
+        value: "" # Add your Hugging Face token
+      - key: OPENAI_API_KEY
+        value: "" # Add your OpenAI API key
+      - key: CLOUDINARY_CLOUD_NAME
+        value: didphkw9a
+      - key: CLOUDINARY_API_KEY
+        value: 455665947111787
+      - key: CLOUDINARY_API_SECRET
+        value: "" # Add your Cloudinary API secret
+      - key: FACEBOOK_APP_ID
+        value: 1651763742686740
+      - key: FACEBOOK_APP_SECRET
+        value: "" # Add your Facebook app secret
+      - key: INSTAGRAM_ACCESS_TOKEN
+        value: "" # Add your Instagram access token
+      - key: INSTAGRAM_REDIRECT_URI
+        generateValue: https://$RENDER_SERVICE_NAME.onrender.com/api/instagram/oauth/callback
 
-  - type: web
-    name: socialflow-frontend
-    env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://socialflow-backend.onrender.com
+databases:
+  - name: socialflow-db
+    databaseName: socialflow
+    user: socialflow_user
 
 # 📋 DEPLOYMENT INSTRUCTIONS:
 #
