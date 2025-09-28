@@ -25,9 +25,7 @@ const Index = () => {
           className="relative mx-auto max-w-4xl"
         >
           <div className="mb-8 flex justify-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center animate-pulse-glow">
-              <span className="text-white font-bold text-3xl">S</span>
-            </div>
+            <img src="/favicon.svg" alt="Auto-Socialize" className="w-16 h-16 animate-pulse-glow" />
           </div>
           
           <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
